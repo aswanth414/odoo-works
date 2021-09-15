@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+ship_manager,ship manager,model_febnoship_ship,,1,1,1,1
+shipline_manager,shipline manager,model_febnoship_lines,,1,1,1,1
