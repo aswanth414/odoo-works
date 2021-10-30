@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="subitem_tree_view" model="ir.ui.view">
+        <field name="name">Sub Items</field>
+        <field name="model">domain.inherit</field>
+        <field name="inherit_id" ref="account_subitems.subitem_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='domain_ids']" position="before">
+                <field name="products"/>
+            </xpath>
+            <xpath expr="//field[@name='domain_ids']" position="after">
+                <field name="invoice_quantity"/>
+                <field name="purchase_quantity"/>
+                <field name="invoice_amount"/>
+                <field name="purchase_amount"/>
+                <field name="result" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="subitem_form_view" model="ir.ui.view">
+        <field name="name">Sub Items form</field>
+        <field name="model">domain.inherit</field>
+        <field name="inherit_id" ref="account_subitems.subitem_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/field[@name='domain_ids']" position="after">
+                <field name="products"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="subitem_active_form_view" model="ir.ui.view">
+        <field name="name">Sub Items Active form</field>
+        <field name="model">domain.inherit</field>
+        <field name="inherit_id" ref="account_subitems.subitem_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/field[@name='products']" position="after">
+                <field name="active_sub"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="subitem_search_view" model="ir.ui.view">
+            <field name="name">renewal_new.subitem.search</field>
+            <field name="model">domain.inherit</field>
+            <field name="arch" type="xml">
+                <search string="Search Subitems">
+                    <field name="domain_ids" string="Subitem" filter_domain="[('domain_ids', 'ilike', self)]"/>
+                    <field name="products" string="Product" filter_domain="[('products', 'ilike', self)]"/>
+                </search>
+            </field>
+    </record>
+
+
+</odoo>

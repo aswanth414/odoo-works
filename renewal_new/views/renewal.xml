@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_move_line_tree_grouped_renew" model="ir.ui.view">
+        <field name="name">account.move.line.tree.grouped.renew</field>
+        <field name="model">account.move.line</field>
+        <!-- creates another view as same as inherited one by changing its fields without affecting it-->
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="account.view_move_line_tree_grouped"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='domain_ids']" position="after">
+                <field name="quantity" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="end_customer" readonly="1" options="{'no_open': True}" optional="hide"/>
+            </xpath>
+            <field name="move_id" position="attributes">
+                <attribute name="optional">show</attribute>
+            </field>
+            <field name="date" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="account_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="ref" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="name" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="full_reconcile_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="date_maturity" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="debit" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="credit" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="amount_currency" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="tax_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="tag_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="start_date" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </field>
+            <field name="end_date" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </field>
+            <field name="status_id" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </field>
+            <field name="partner_id" position="attributes">
+                <attribute name="options">{'no_open': True}</attribute>
+            </field>
+            <field name="domain_ids" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="options">{'no_open': True}</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_move_line_tree_grouped_renew_admin" model="ir.ui.view">
+        <field name="name">account.move.line.tree.grouped.renew.admin</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="renewal_new.view_move_line_tree_grouped_renew"/>
+        <field name="groups_id" eval="[(6,0,[ref('renewal_new.renewal_admin')])]"/>
+        <field name="arch" type="xml">
+            <field name="move_id" position="attributes">
+                <attribute name="options">{'no_open': False}</attribute>
+            </field>
+            <field name="partner_id" position="attributes">
+                <attribute name="options">{'no_open': False}</attribute>
+            </field>
+            <field name="end_customer" position="attributes">
+                <attribute name="options">{'no_open': False}</attribute>
+                <attribute name="optional">show</attribute>
+            </field>
+            <field name="domain_ids" position="attributes">
+                <attribute name="readonly">0</attribute>
+                <attribute name="options">{'no_open': True}</attribute>
+            </field>
+            <field name="quantity" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </field>
+            <field name="start_date" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </field>
+            <field name="end_date" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </field>
+            <field name="status_id" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </field>
+        </field>
+    </record>
+
+
+    <!-- Adding a filter Renewed !-->
+    <record id="view_move_line_tree_grouped_custom_filter" model="ir.ui.view">
+        <field name="name">view.move.line.tree.custom.filter</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_account_move_line_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter string="Renewed" name="renewed" domain="[('status_id','=','b')]"/>
+                <group string="Group By">
+                    <filter name="Renewed" string="Renewed"
+                            context="{'group_by': 'status_id'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Adding a filter Un Renewed !-->
+    <record id="view_move_line_tree_grouped_custom_filter_new" model="ir.ui.view">
+        <field name="name">view.move.line.tree.custom.filter.new</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_account_move_line_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter string="Un Renewed" name="unrenewed" domain="[('status_id','!=','b')]"/>
+                <group string="Group By">
+                    <filter name="Un Renewed" string="Un Renewed"
+                            context="{'group_by': 'status_id'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action of Renewal Report Menu !-->
+    <record model="ir.actions.act_window" id="renewal_new_renewal_action">
+        <field name="name">Renewal</field>
+        <field name="res_model">account.move.line</field>
+        <field name="view_id" ref="view_move_line_tree_grouped_renew"/>
+        <field name="view_mode">tree</field>
+        <field name="context">{'search_default_End_date':1}</field>
+        <field name="domain">[('end_date', '!=', None),('move_id.state', '!=', 'cancel')]
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No Renewals....</p>
+        </field>
+    </record>
+
+    <!-- Action of Subitems Menu !-->
+    <record model="ir.actions.act_window" id="subscription_subitems_action">
+        <field name="name">Sub Item</field>
+        <field name="res_model">domain.inherit</field>           <!-- relation of Sub Item-->
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+    </record>
+
+
+    <menuitem id="main_renewal_menu"
+              name="Subscription"
+              web_icon="renewal_new,static/description/icon.png"
+              sequence="55"/>
+
+    <menuitem id="renewal_menu" name="Renewal Reports"
+              parent="main_renewal_menu"
+              groups="renewal_viewer"
+              action="renewal_new_renewal_action"
+              sequence="1"/>
+
+    <menuitem id="subitem_menu"
+              name="Sub Item"
+              parent="renewal_new.main_renewal_menu"
+              groups="renewal_new.renewal_viewer"
+              action="subscription_subitems_action"
+              sequence="2"/>
+
+    <menuitem id="renewal_report_menu" name="Reporting"
+              parent="main_renewal_menu"
+              action="renewal_wizard_report_action"
+              sequence="3"/>
+<!--    <menuitem id="renewal_report_menu" name="Reports"-->
+<!--              parent="renewal_report_menu"-->
+<!--              action="renewal_wizard_report_action"-->
+<!--              sequence="1"/>-->
+
+
+</odoo>
