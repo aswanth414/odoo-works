@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="renewal_reports">
+        <t t-call="web.html_container">
+            <!--            <t t-foreach="docs" t-as="doc">-->
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <table>
+                        <tr>
+                            <td>SubItem :</td>
+                            <td>
+                                <t t-if="form.get('domain_ids')">
+                                    <t t-esc="form['domain_ids'][1]"></t>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>End Date:</td>
+                            <td>
+                                <t t-if="form.get('end_date')">
+                                    <t t-esc="form['end_date']"></t>
+                                </t>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered mt32">
+                        <thead>
+                            <tr>
+                                <th name="th_partner_id" class="text-left">
+                                    <span>Partner</span>
+                                </th>
+                                <th name="th_product_id" class="text-left">
+                                    <span>Product</span>
+                                </th>
+                                <th name="th_quantity_id" class="text-left">
+                                    <span>Quantity</span>
+                                </th>
+                                <th name="th_subitem" class="text-left">
+                                    <span>Subitem</span>
+                                </th>
+                                <th name="th_start_date" class="text-left">
+                                    <span>Start Date</span>
+                                </th>
+                                <th name="th_end_date" class="text-left">
+                                    <span>End Date</span>
+                                </th>
+                                <th name="th_status_id" class="text-left">
+                                    <span>Status</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="reports" t-as="line">
+                            <tr>
+                                <td>
+                                    <span t-esc="line['partner_id'][1]"/>
+                                </td>
+
+                                <td>
+                                    <span t-esc="line['product_id'][1]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['quantity']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['domain_ids'][1]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['start_date']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['end_date']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['status_id']"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </t>
+        </t>
+        <!--        </t>-->
+    </template>
+</odoo>
