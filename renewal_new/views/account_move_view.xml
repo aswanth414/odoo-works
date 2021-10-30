@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<!--    Adding Renewal Field In Invoice Line -->
+    <record id="view_move_form" model="ir.ui.view">
+        <field name="name">account.move.form.renewal</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="end_customer"
+                       attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>
+            </xpath>
+
+            <xpath expr="//sheet/notebook/page[@id='other_tab']" position="after">
+                <page id="renewal" string="Renewal" name="renewal" attrs="{'invisible': [('type', '=', 'entry')]}">
+                    <field name="renewal_line_ids"
+                           widget="section_and_note_one2many"
+                           mode="tree,kanban">
+                        <tree editable="bottom">
+                            <field name="domain_ids" optional="show"/>
+                            <field name="renewal_ids" optional="show"/>
+                            <field name="no_of_days" optional="show"/>
+                            <field name="one_day_cost" invisible="1"/>
+                            <field name="account_id"
+                                   groups="account.group_account_user"
+                                   domain="[('deprecated', '=', False), ('user_type_id.type', 'not in', ('receivable', 'payable')), ('company_id', '=', parent.company_id)]"
+                                   required="False"
+                                   invisible="1"/>
+                            <field name="id" invisible="1"/>
+                            <field name="display_type" force_save="1" invisible="1"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+      <!-- End Customer Column In Invoice Tree List !-->
+    <record id="view_invoice_tree" model="ir.ui.view">
+        <field name="name">account.invoice.tree</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <field name="invoice_user_id" position="after">
+                <field name="end_customer"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
