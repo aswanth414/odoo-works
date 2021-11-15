@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="menu_user_profile"
+              name="Create User"
+              parent="base.menu_action_res_users"
+              action="user_profile_action"/>
+</odoo>

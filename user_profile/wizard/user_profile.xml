@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="user_profile_form_view">
+        <field name="name">user.profile.wizard.form</field>
+        <field name="model">user.profile.wizard</field>
+        <field name="arch" type="xml">
+            <form string="User Profile Form">
+                <sheet>
+                    <group>
+                        <field name="client"/>
+                        <field name="user_type"/>
+                        <field name="first_name"/>
+                        <field name="last_name"/>
+                        <field name="email_id"/>
+                        <field name="login_id"/>
+                        <field name="pwd_id"/>
+                    </group>
+                    <footer>
+                        <button string="Create User" class="btn btn-primary o_form_button_save"></button>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="user_profile_action">
+        <field name="name">Create User Wizard</field>
+        <field name="res_model">user.profile.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="user_profile_form_view"/>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>
