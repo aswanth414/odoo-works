@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="paperformat_sales_enquiry_report" model="report.paperformat">
+        <field name="name">Invoice Report Customization</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">32</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">30</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report
+            id="report_id"
+            string="print"
+            model="sales.enquiry"
+            report_type="qweb-pdf"
+            file="sales_enquiry.sale_enquiry_pdf_report"
+            name="sales_enquiry.sale_enquiry_pdf_report"
+            paperformat="sales_enquiry.paperformat_sales_enquiry_report"
+    />
+
+</odoo>

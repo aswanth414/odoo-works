@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="course_form_view">
+        <field name="name">saleenquiry.form</field>
+        <field name="model">sales.enquiry</field>
+        <field name="arch" type="xml">
+            <form string="Sale Form">
+                <header>
+                    <button name="action_confirm" id="action_confirm" string="Confirm" class="btn-primary"
+                            type="object" states="new"/>
+                    <button name="action_reset_draft" id="action_reset_draft" string="Reset To Draft"
+                            class="btn-primary" type="object" states="cancel"/>
+                    <button name="action_create_quotation" id="action_create_quotation" string="Create Quotation"
+                            class="btn-primary" type="object" states="confirmed"/>
+                    <button name="action_done" id="action_done" string="Done" class="btn-primary" type="object"
+                            states="quotation"/>
+                    <button name="action_cancel" id="action_cancel" string="Cancel" type="object"
+                            states="new"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="" readonly="1">
+                        <h1>
+                            <field name="name_seq"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="customer"/>
+                        <field name="enquiry_date"/>
+                        <field name="address"/>
+                        <field name="responsible_id"/>
+                        <field name="sale_order_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Enquiry Line">
+                            <field name="enquiry_line_ids">
+                                <tree string="Enquiry Line Tree" editable="bottom">
+                                    <field name="product_id"
+                                           context="{
+                                            'default_lst_price': price_unit,
+                                        }"/>
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="product_uom"/>
+                                    <field name="price_unit"/>
+                                    <field name="price_subtotal"/>
+                                    <field name="enquiry_lines" invisible="1"/>
+
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group name="note_group" col="6">
+                        <group colspan="4">
+                            <field name="note" nolabel="1" placeholder="Terms and conditions..."/>
+                        </group>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                            <field name="amount_total"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="sales_enquiry_tree_view">
+        <field name="name">saleenquiry.tree</field>
+        <field name="model">sales.enquiry</field>
+        <field name="arch" type="xml">
+            <tree string="Salese Enquiry">
+                <field name="name_seq"/>
+                <field name="customer"/>
+                <field name="enquiry_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="model_sales_enquiry_action_confirm_enquiry" model="ir.actions.server">
+        <field name="name">Confirm Enquiry</field>
+        <field name="model_id" ref="sales_enquiry.model_sales_enquiry"/>
+        <field name="binding_model_id" ref="sales_enquiry.model_sales_enquiry"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="state">code</field>
+        <field name="code">
+if record:
+    action_values = env.ref('sales_enquiry.action_sale_enquiry_confirm').read()[0]
+    action_values.update({'context': env.context})
+    action = action_values
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="sale_enquiry_list_action">
+        <field name="name">Sales Enquiry</field>
+        <field name="res_model">sales.enquiry</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="main_sales_enquiry" name="Sales Enquiry"/>
+    <menuitem id="sales_enquiry_submenu" name="Sales Enquiry" parent="main_sales_enquiry"
+              action="sale_enquiry_list_action"/>
+</odoo>

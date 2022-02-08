@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="id_sale_enquiry_confirm">
+        <field name="name">sale.enquiry.confirm.form</field>
+        <field name="model">sales.enquiry.confirm</field>
+        <field name="arch" type="xml">
+            <form string="Confirm Draft">
+                <group>
+                    <button name="action_wizard_confirm_draft" id="confirm_draft" string="Confirm Draft"
+                            class="btn-primary" type="object"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="action_sale_enquiry_confirm">
+        <field name="name">Sales Enquiry Confirm</field>
+        <field name="res_model">sales.enquiry.confirm</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

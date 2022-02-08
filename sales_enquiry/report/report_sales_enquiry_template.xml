@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="sales_enquiry.sale_enquiry_pdf_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <style>
+                        .custom_width_heading {
+                        padding-left: 50px;
+                        }
+                        .custom_width_table {
+                        padding-left: 80px;
+                        padding-right: 80px;
+                        }
+                        .border-black,
+                        td,table,tr {
+                        border: 1px solid black
+                        }
+                        .custom_width {
+                        padding-left: 60px;
+                        padding-right: 60px;
+                    </style>
+                    <div class="page">
+                        <div class="custom_width_heading">
+                            <h5>
+                                <b>Sales enquiry</b>
+                            </h5>
+                        </div>
+                        <div class="row custom_width">
+                            <div class="container" style="border-bottom:none;padding:0px; margin-bottom: 5em;">
+                                <div style="float:left; width: 360px; border: 15px; text-align: left; border:1px solid #161A1D;color:black; margin-right:5px; margin-left:5px;">
+                                    <div style="margin-left:1px;">
+
+                                        <div class="col-12 text-left" style="font-size:14px; padding-top: 0.2cm;">
+                                            <span>Dated :</span>
+                                            <span t-field="o.enquiry_date"
+                                                  t-options='{"format": "dd MMM yyyy"}'/>
+                                        </div>
+                                        <div class="col-12 text-left" style="font-size:14px; padding-top: 0.2cm;">
+                                            <span>Responsible Person :</span>
+                                            <span t-field="o.responsible_id"/>
+                                        </div>
+                                        <div class="col-12 text-left" style="font-size:14px; padding-top: 0.2cm;">
+                                            <span>Phone :</span>
+                                            <t t-if="o.responsible_id.phone">
+                                                <span t-field="o.responsible_id.phone"/>
+                                            </t>
+                                        </div>
+                                        <div class="col-12 text-left" style="font-size:14px; padding-top: 0.2cm;">
+                                            <span>Email :</span>
+                                            <t t-if="o.responsible_id.phone">
+                                                <span t-field="o.responsible_id.login"/>
+                                            </t>
+                                        </div>
+                                        <div class="col-12 text-left" style="font-size:14px; padding-top: 0.2cm;">
+                                            <span>Total Pages :</span>
+                                            <span class="topage"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container" style="border-bottom:none;padding:0px;">
+                                    <div style="float: right; margin:1.5px; width: 390px; border: 15px; text-align: left; border:1px solid #161A1D;color:black; margin-right:5px; margin-left:5px;">
+                                        <div style="margin-left:1px;">
+                                            <div class="col-12 text-left" style="font-size:14px;">
+                                                <span>Customer:</span>
+                                                <t t-if=" o.customer">
+                                                    <span t-field="o.customer"/>
+                                                </t>
+                                            </div>
+                                            <div class="col-12 text-left"
+                                                 style="font-size:14px; padding-top: 0.2cm;">
+                                                <span>Address :</span>
+                                                <t t-if="o.customer.street">
+                                                    <span t-field="o.customer.street"></span>
+                                                    <span>,</span>
+                                                </t>
+                                                <t t-if="o.customer.street2">
+                                                    <span t-esc="o.customer.street2"/>
+                                                    <span>,</span>
+                                                </t>
+                                                <t t-if="o.customer.city">
+                                                    <span t-esc="o.customer.city"/>
+                                                    <span>,</span>
+                                                </t>
+                                                <t t-if="o.customer.state_id.name">
+                                                    <span t-esc="o.customer.state_id.name"/>
+                                                    <span>,</span>
+                                                </t>
+                                                <div>
+                                                    <span>Country :</span>
+                                                    <t t-if="o.customer.country_id.name">
+                                                        <span t-esc="o.customer.country_id.name"/>
+                                                    </t>
+                                                    <t t-else=" ">
+                                                        <span>
+                                                            &#8205;
+                                                        </span>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row custom_width_table" style="margin-top:0.2cm;">
+                            <table class="row">
+                                <thead style="display:table-header-group;color:black;">
+                                    <tr style="line-height: 1.5cm;">
+                                        <td class="text-left" style="width:5%; padding-left: 1%;">
+                                            <strong>Item #</strong>
+                                        </td>
+                                        <td class="text-left" style="width:30%; padding-left: 1%;">
+                                            <strong>Product</strong>
+                                        </td>
+                                        <td class="text-left" style="width:30%; padding-left: 1%;">
+                                            <strong>Quantity</strong>
+                                        </td>
+                                        <td class="text-left" style="width:10%; padding-left: 1%;">
+                                            <strong>Subtotal</strong>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="index" t-value="0"/>
+                                    <tr t-foreach="o.enquiry_line_ids" t-as="line">
+                                        <t t-set="index" t-value="index+1"/>
+                                        <td style="padding-left: 1%;">
+                                            <span t-esc="index"/>
+                                        </td>
+                                        <td style="padding-left: 1%;">
+                                            <span t-esc="line.product_id.name"/>
+                                        </td>
+                                        <td style="padding-left: 1%;">
+                                            <span t-esc="line.quantity"/>
+                                        </td>
+                                        <td class="text-right" style="padding-right: 1%;">
+                                            <span t-esc="'{:,.3f}'.format(line.price_subtotal)"/>
+                                        </td>
+                                    </tr>
+                                    <td/>
+                                    <td/>
+                                    <td class="text-right" style="padding-right: 1%;">
+                                        <b>Total</b>
+                                        (excluding Vat)
+                                    </td>
+                                    <td class="text-right" style="padding-right: 1%;">
+                                        <span t-field="o.amount_total" style="color:black;"/>
+                                    </td>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="custom_width" style="padding-top: 1cm; font-size:15px;">
+                            <i>
+                                Any concerns related to the contents of the purchase order should be addressed to
+                                the sender within 3 (three) working days of purchase order release date. The
+                                contents and associated terms &amp; conditions of this purchase order will be deemed
+                                fully accepted by the supplier if the supplier is unable to respond within 3 working
+                                days of purchase order release date.
+                            </i>
+                            <br></br>
+                            <br></br>
+                            <i>
+                                A duly signed copy of the PO will be shared with the supplier via email. This
+                                Purchase order will be only valid if it carries the approval signature/ e-signatures
+                                (via DocuSign) of BFS CEO.
+                            </i>
+                        </div>
+
+                        <div class="custom_width" style="padding-top: 1.5cm; font-size:15px; page-break-inside: avoid;">
+                            Terms &amp; Conditions :
+                            <div style="margin-left: 10%; margin-right: 10%;">
+                                <span style="padding-left: 2cm;" t-field="o.note"/>
+                            </div>
+                        </div>
+                        <div class="custom_width" style="padding-top: 0.5cm; font-size:15px;">
+                            Deliver to :
+                            <span style="margin-left: 10%; margin-right: 10%;padding-left: 0.9cm;">Roberto Mancone
+                                (CEO), Building 1095, Road 1425, Al Hamala Block 1014, PO Box 14,
+                            </span>
+                            <br></br>
+                            <span style="margin-left: 10%; margin-right: 10%;padding-left: 2.9cm;">Manama, Kingdom of
+                                Bahrain
+                            </span>
+                        </div>
+                        <div class="last-page custom_width" style="padding-top: 1cm; font-size:15px;">
+                            <span>
+                                <b>Approval Signature :</b>
+                            </span>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
